@@ -32,6 +32,12 @@ fn main() {
     cpp_config
         .flag_if_supported("-Wno-unused-parameter")
         .flag_if_supported("-Wno-unused-but-set-variable");
+    // Add C++17 flag
+    if cfg!(target_env = "msvc") {
+        cpp_config.flag("/std:c++17");
+    } else {
+        cpp_config.flag("-std=c++17");
+    }
     let scanner_path = src_dir.join("scanner.cc");
     cpp_config.file(&scanner_path);
     cpp_config.compile("scanner");
